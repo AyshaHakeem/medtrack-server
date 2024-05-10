@@ -291,11 +291,7 @@ const carecircleRoute: RouteType = (apiRouter) => {
 
 			try {
 				const {body} = req;
-				const result = await medicineService.addMedicine(
-					uniqueRequestId,
-					req.params.careCircleId,
-					body
-				);
+				const result = await medicineService.addMedicine(uniqueRequestId, body);
 				const {httpStatusCode} = result;
 
 				logger.debug(

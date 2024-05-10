@@ -20,7 +20,6 @@ export default class MedicineService {
 	// add a medicine record and related dose records
 	public async addMedicine(
 		uniqueRequestId: NullableString,
-		carecircleId: string,
 		medicineDTO: iMedicineCreationDTO
 	): Promise<iGenericServiceResult<iMedicineWithDose | null>> {
 		return db.tx("add-medicine-with-dose", async (transaction) => {
@@ -72,7 +71,7 @@ export default class MedicineService {
 				},
 			};
 			return serviceUtil.buildResult(
-				false,
+				true,
 				httpStatusCodes.SUCCESS_CREATED,
 				uniqueRequestId,
 				null,

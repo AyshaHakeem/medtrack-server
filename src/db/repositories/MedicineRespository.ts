@@ -19,7 +19,7 @@ export default class MedicineRespository {
 		id: string,
 		patientName: string,
 		name: string,
-		carecircleId: string,
+		careCircleId: string,
 		fromDate: string,
 		toDate: string,
 		note: string
@@ -28,7 +28,7 @@ export default class MedicineRespository {
 			id,
 			patientName,
 			name,
-			carecircleId,
+			careCircleId,
 			fromDate,
 			toDate,
 			note,
