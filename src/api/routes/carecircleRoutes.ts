@@ -32,7 +32,7 @@ import {
 import {iUserInvite} from "customTypes/appDataTypes/userMapTypes";
 
 import {
-	idSchema,
+	carecircleIdSchema,
 	carecircleCreationSchema,
 	medicineSchema,
 	emailSchema,
@@ -168,7 +168,7 @@ const carecircleRoute: RouteType = (apiRouter) => {
 	route.get(
 		"/:carecircleId/medicine",
 		celebrate({
-			[Segments.PARAMS]: idSchema,
+			[Segments.PARAMS]: carecircleIdSchema,
 		}),
 		async (
 			req: iRequest<{carecircleId: string}>,
@@ -218,19 +218,22 @@ const carecircleRoute: RouteType = (apiRouter) => {
 	*/
 	route.get(
 		"/:carecircleId/medicine/today",
-		celebrate({
-			[Segments.PARAMS]: idSchema,
-		}),
+		// celebrate({
+		// [Segments.PARAMS]: carecircleIdSchema,
+		// }),
 		async (
 			req: iRequest<{carecircleId: string}>,
 			res: iResponse<iMedicineResult>,
 			next: NextFunction
 		) => {
+			console.log("Request Params:", req.params);
+			logger.silly(
+				`Calling GET:/:carecircleId/today endpoint with params :\n ${req.params}`
+			);
 			const uniqueRequestId = expressUtil.parseUniqueRequestId(req);
-
 			logger.debug(
 				uniqueRequestId,
-				"Calling GET:/:carecircleId/today endpoint with body:",
+				"Calling GET:/:carecircleId/today endpoint with params:",
 				null,
 				{
 					requestParams: req.params,
@@ -242,6 +245,7 @@ const carecircleRoute: RouteType = (apiRouter) => {
 					uniqueRequestId,
 					req.params.carecircleId
 				);
+
 				const {httpStatusCode} = result;
 
 				logger.debug(

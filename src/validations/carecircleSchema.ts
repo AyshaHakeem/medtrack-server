@@ -1,15 +1,12 @@
 import Joi from "joi";
-import {uuidv4Schema} from "./genericSchemas";
+// import {uuidv4Schema} from "./genericSchemas";
 
-const id = uuidv4Schema.required();
+const idSchema = Joi.string().uuid().required();
 const carecircleNameSchema = Joi.string().required();
+const carecircleIdSchema = Joi.string().uuid().required();
 
 const carecircleCreationSchema = Joi.object({
 	name: carecircleNameSchema,
-});
-
-const idSchema = Joi.object({
-	id,
 });
 
 const emailSchema = Joi.object({
@@ -37,5 +34,6 @@ export {
 	carecircleNameSchema,
 	carecircleCreationSchema,
 	medicineSchema,
-	idSchema,
+	carecircleIdSchema,
+	// idSchema,
 };

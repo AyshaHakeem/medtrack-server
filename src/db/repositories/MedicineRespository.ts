@@ -91,7 +91,7 @@ export default class MedicineRespository {
                 medicine_dose d ON m.id = d.medicine_id
             WHERE 
                 m.carecircle_id = $1
-				AND CURRENT_DATE BETWEEN m.from_date AND m.to_date;`,
+				AND CURRENT_DATE::DATE BETWEEN m.from_date AND m.to_date;`,
 			carecircleId
 		);
 	}
