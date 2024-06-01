@@ -16,7 +16,7 @@ async function startServer(): Promise<void> {
 				null,
 				`
 			###################################################################
-			🚀 PluteoJS Server Running at: http://localhost:${config.port} 🚀
+			🚀 MedTrack Server Running at: http://localhost:${config.port} 🚀
 			###################################################################
 			`
 			)

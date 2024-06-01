@@ -161,3 +161,4 @@ dist
 
 #MacOS
 .DS_Store
+.env.development
