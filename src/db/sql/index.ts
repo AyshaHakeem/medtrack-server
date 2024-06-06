@@ -63,6 +63,11 @@ export const users = {
 	add: sql("users/add.sql"),
 };
 
+export const carecircle = {
+	create: sql("carecircle/create.sql"),
+	add: sql("carecircle/add.sql"),
+};
+
 export const medicine = {
 	create: sql("medicine/create.sql"),
 	add: sql("medicine/add.sql"),

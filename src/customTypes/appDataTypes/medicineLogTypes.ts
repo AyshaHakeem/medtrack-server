@@ -1,13 +1,13 @@
 export interface iMedicineLog {
 	id: string;
-	medicineId: string;
+	doseId: string;
 	date: string;
 	status: number;
 	userId: string;
 }
 
 export interface iMedicineLogCreationDTO {
-	medicineId: string;
+	doseId: string;
 	date: string;
 	status: number;
 	userId: string;
