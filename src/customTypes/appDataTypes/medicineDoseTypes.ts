@@ -12,3 +12,10 @@ export interface iMedicineDoseCreationDTO {
 	dose: string;
 	note: string;
 }
+
+export interface iMedicineDoseResult {
+	ids: string[];
+	items: {
+		[id: string]: iMedicineDose;
+	};
+}

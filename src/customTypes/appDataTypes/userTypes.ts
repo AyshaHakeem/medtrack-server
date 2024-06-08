@@ -12,3 +12,10 @@ export interface iUserInputDTO {
 	email: string;
 	password: string;
 }
+
+export interface iUserResult {
+	ids: string[];
+	items: {
+		[userId: string]: iUser;
+	};
+}
