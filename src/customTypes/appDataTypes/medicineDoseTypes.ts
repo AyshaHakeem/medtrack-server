@@ -7,7 +7,6 @@ export interface iMedicineDose {
 }
 
 export interface iMedicineDoseCreationDTO {
-	medicineId: string;
 	time: string;
 	dose: string;
 	note: string;

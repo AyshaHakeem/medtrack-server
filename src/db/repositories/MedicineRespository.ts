@@ -39,7 +39,11 @@ export default class MedicineRespository {
 		return this.db.oneOrNone("SELECT * FROM medicine WHERE id=$1", id);
 	}
 
-	async findByCarecircleId(
+	async findByCarecircleId(id: string): Promise<iMedicineModel | null> {
+		return this.db.oneOrNone("SELECT * FROM medicine WHERE id=$1", id);
+	}
+
+	async findMedicineDetails(
 		carecircleId: string
 	): Promise<iMedicineDoseModel[] | null> {
 		return this.db.manyOrNone(

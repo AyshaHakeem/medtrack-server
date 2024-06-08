@@ -1,29 +1,95 @@
 import {db} from "@db/index";
 
 import serviceUtil from "@util/serviceUtil";
+import securityUtil from "@util/securityUtil";
 
 import {iGenericServiceResult} from "@pluteojs/types/modules/commonServiceTypes";
 import {httpStatusCodes} from "@pluteojs/types/modules/networkTypes";
 import {
+	iMedicineCreationDTO,
 	iMedicineResult,
 	iMedicineWithDose,
 	iMedicineDoseRecord,
 } from "customTypes/appDataTypes/medicineTypes";
 
+import {iMedicineDose} from "customTypes/appDataTypes/medicineDoseTypes";
+
 import {NullableString} from "@pluteojs/types/modules/commonTypes";
 
 export default class MedicineService {
+	// add a medicine record and related dose records
+	public async addMedicine(
+		uniqueRequestId: NullableString,
+		medicineDTO: iMedicineCreationDTO
+	): Promise<iGenericServiceResult<iMedicineWithDose | null>> {
+		return db.tx("add-medicine-with-dose", async (transaction) => {
+			const doseIds: string[] = [];
+			const doseItems: {[id: string]: iMedicineDose} = {};
+			const {name, patientName, careCircleId, fromDate, toDate, note, doses} =
+				medicineDTO;
+			const id = securityUtil.generateUUID();
+			const medicineRecord = await transaction.medicines.add(
+				id,
+				name,
+				patientName,
+				careCircleId,
+				fromDate,
+				toDate,
+				note
+			);
+
+			doses.forEach(async (dose) => {
+				const doseId = securityUtil.generateUUID();
+				const doseRecord = await transaction.medicineDoses.add(
+					doseId,
+					medicineRecord.id,
+					dose.time,
+					dose.dose,
+					dose.note
+				);
+				doseIds.push(doseRecord.id);
+				doseItems[doseRecord.id] = {
+					id: doseRecord.id,
+					medicineId: medicineRecord.id,
+					time: doseRecord.time,
+					dose: doseRecord.dose,
+					note: doseRecord.note,
+				};
+			});
+
+			const medicine: iMedicineWithDose = {
+				id: medicineRecord.id,
+				patientName: medicineRecord.patient_name,
+				carecircleId: medicineRecord.carecircle_id,
+				name: medicineRecord.name,
+				fromDate: medicineRecord.from_date,
+				toDate: medicineRecord.to_date,
+				note: medicineRecord.note,
+				doses: {
+					ids: doseIds,
+					items: doseItems,
+				},
+			};
+			return serviceUtil.buildResult(
+				false,
+				httpStatusCodes.SUCCESS_CREATED,
+				uniqueRequestId,
+				null,
+				medicine
+			);
+		});
+	}
+
+	// return all medicine records with doses under a carecircle
 	public async getMedicineDetails(
 		uniqueRequestId: NullableString,
 		carecircleId: string
 	): Promise<iGenericServiceResult<iMedicineResult | null>> {
-		// medicine -> where cc equals | dose -> where medicine equals
 		return db.tx("get-medicine-details", async (transaction) => {
-			// const MedicineWithDose: iMedicineWithDose = {};
 			const ids: string[] = [];
 			const items: {[id: string]: iMedicineWithDose} = {};
 			const medicineRecords: iMedicineDoseRecord[] | null =
-				await transaction.medicines.findByCarecircleId(carecircleId);
+				await transaction.medicines.findMedicineDetails(carecircleId);
 
 			if (!medicineRecords || medicineRecords.length === 0) {
 				return serviceUtil.buildResult(
@@ -78,6 +144,7 @@ export default class MedicineService {
 		});
 	}
 
+	// return active medicine records with doses
 	public async getActiveMedicineDetails(
 		uniqueRequestId: NullableString,
 		carecircleId: string

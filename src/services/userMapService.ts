@@ -1,0 +1,47 @@
+// import logger from "@loaders/logger";
+
+import {db} from "@db/index";
+
+import serviceUtil from "@util/serviceUtil";
+import securityUtil from "util/securityUtil";
+
+import {iGenericServiceResult} from "@pluteojs/types/modules/commonServiceTypes";
+import {httpStatusCodes} from "@pluteojs/types/modules/networkTypes";
+
+import {
+	iUserMap,
+	iUserMapCreationDTO,
+} from "customTypes/appDataTypes/userMapTypes";
+
+import {NullableString} from "@pluteojs/types/modules/commonTypes";
+
+export default class UserMapService {
+	public async addUserMap(
+		uniqueRequestId: NullableString,
+		userMapDTO: iUserMapCreationDTO
+	): Promise<iGenericServiceResult<iUserMap | null>> {
+		return db.tx("add-carecircle", async (transaction) => {
+			const {userId, carecircleId} = userMapDTO;
+			const id = securityUtil.generateUUID();
+			const userMapRecord = await transaction.userMaps.add(
+				id,
+				userId,
+				carecircleId
+			);
+
+			const userMap: iUserMap = {
+				id: userMapRecord.id,
+				userId: userMapRecord.user_id,
+				carecircleId: userMapRecord.carecircle_id,
+			};
+
+			return serviceUtil.buildResult(
+				true,
+				httpStatusCodes.SUCCESS_OK,
+				uniqueRequestId,
+				null,
+				userMap
+			);
+		});
+	}
+}

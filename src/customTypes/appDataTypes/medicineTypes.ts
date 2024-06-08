@@ -1,6 +1,6 @@
-import {iMedicineDose} from "./medicineDoseTypes";
+import {iMedicineDose, iMedicineDoseCreationDTO} from "./medicineDoseTypes";
 
-export interface iMedicine {
+export interface iMedicineWithDose {
 	id: string;
 	patientName: string;
 	carecircleId: string;
@@ -8,6 +8,12 @@ export interface iMedicine {
 	fromDate: string;
 	toDate: string;
 	note: string;
+	doses: {
+		ids: string[];
+		items: {
+			[id: string]: iMedicineDose;
+		};
+	};
 }
 
 export interface iMedicineCreationDTO {
@@ -17,15 +23,7 @@ export interface iMedicineCreationDTO {
 	fromDate: string;
 	toDate: string;
 	note: string;
-}
-
-export interface iMedicineWithDose extends iMedicine {
-	doses: {
-		ids: string[];
-		items: {
-			[id: string]: iMedicineDose;
-		};
-	};
+	doses: iMedicineDoseCreationDTO[];
 }
 
 export interface iMedicineResult {
