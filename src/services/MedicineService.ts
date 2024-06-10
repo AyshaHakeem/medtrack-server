@@ -20,6 +20,7 @@ export default class MedicineService {
 	// add a medicine record and related dose records
 	public async addMedicine(
 		uniqueRequestId: NullableString,
+		carecircleId: string,
 		medicineDTO: iMedicineCreationDTO
 	): Promise<iGenericServiceResult<iMedicineWithDose | null>> {
 		return db.tx("add-medicine-with-dose", async (transaction) => {
@@ -118,9 +119,11 @@ export default class MedicineService {
 					};
 				}
 
-				if (!items[record.medicine_id].doses.ids.includes(record.dose_id)) {
-					items[record.medicine_id].doses.ids.push(record.dose_id);
-					items[record.medicine_id].doses.items[record.dose_id] = {
+				const {doses} = items[record.medicine_id];
+
+				if (!doses.ids.includes(record.dose_id)) {
+					doses.ids.push(record.dose_id);
+					doses.items[record.dose_id] = {
 						id: record.dose_id,
 						dose: record.dose_amount,
 						time: record.dose_time,

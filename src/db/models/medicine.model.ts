@@ -16,8 +16,8 @@ export interface iMedicineDoseModel {
 	from_date: string;
 	to_date: string;
 	medicine_note: string;
-	dose_id?: string;
-	dose_amount?: string;
-	dose_time?: string;
-	dose_note?: string;
+	dose_id: string;
+	dose_amount: string;
+	dose_time: string;
+	dose_note: string;
 }
