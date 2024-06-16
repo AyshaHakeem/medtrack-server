@@ -94,8 +94,8 @@ export default class AuthService {
 				}
 			);
 
-			logger.silly("Attempting to send welcome email");
-			await this.emailService.sendWelcomeEmail(user, task);
+			// logger.silly("Attempting to send welcome email");
+			// await this.emailService.sendWelcomeEmail(user, task);
 
 			return serviceUtil.buildResult(
 				true,
