@@ -9,6 +9,7 @@ import middlewares from "@api/middlewares";
 
 import CarecircleService from "@services/CarecircleService";
 import MedicineService from "@services/MedicineService";
+import UserMapService from "@services/userMapService";
 
 import expressUtil from "@util/expressUtil";
 
@@ -28,15 +29,20 @@ import {
 	iMedicineWithDose,
 } from "customTypes/appDataTypes/medicineTypes";
 
+import {iUserInvite, iUserMap} from "customTypes/appDataTypes/userMapTypes";
+
 import {
 	idSchema,
 	carecircleCreationSchema,
 	medicineSchema,
+	emailSchema,
 } from "validations/carecircleSchema";
+import {medicineLog} from "db/sql";
 
 const route = Router();
 const carecircleService = new CarecircleService();
 const medicineService = new MedicineService();
+const userMapService = new UserMapService();
 
 const userRoute: RouteType = (apiRouter) => {
 	apiRouter.use("/carecircle", route);
@@ -289,6 +295,51 @@ const userRoute: RouteType = (apiRouter) => {
 				return res.status(httpStatusCode).json(result);
 			} catch (error) {
 				logger.error(uniqueRequestId, "Error on POST:/:carecircle", error);
+				return next(error);
+			}
+		}
+	);
+	/*
+		invite care giver
+	*/
+	route.post(
+		"/:carecircleId/invite",
+		celebrate({
+			[Segments.BODY]: emailSchema,
+		}),
+		async (
+			req: iRequest<{email: string}>,
+			res: iResponse<iUserInvite | null>,
+			next: NextFunction
+		) => {
+			const uniqueRequestId = expressUtil.parseUniqueRequestId(req);
+			try {
+				const {body} = req;
+
+				const result = userMapService.addInvite(uniqueRequestId, {
+					...body,
+					userId: req.decodedAccessToken.uid,
+					carecircleId: req.decodedAccessToken.uid,
+				});
+
+				const {httpStatusCode} = result;
+
+				logger.debug(
+					uniqueRequestId,
+					"POST:/:carecircleId/invite :: Completed userMapService.addInvite & sending result to client:",
+					null,
+					{
+						result,
+					}
+				);
+
+				return res.status(httpStatusCode).json(result);
+			} catch (error) {
+				logger.error(
+					uniqueRequestId,
+					"Error on POST:/:carecircleId/invite",
+					error
+				);
 				return next(error);
 			}
 		}

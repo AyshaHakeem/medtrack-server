@@ -88,6 +88,11 @@ export const userMap = {
 	add: sql("usermap/add.sql"),
 };
 
+export const invites = {
+	create: sql("invites/create.sql"),
+	add: sql("invites/add.sql"),
+};
+
 export const emailLogs = {
 	create: sql("emailLogs/create.sql"),
 	add: sql("emailLogs/add.sql"),

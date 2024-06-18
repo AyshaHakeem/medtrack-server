@@ -11,6 +11,7 @@ import {httpStatusCodes} from "@pluteojs/types/modules/networkTypes";
 import {
 	iUserMap,
 	iUserMapCreationDTO,
+	iUserInvite,
 } from "customTypes/appDataTypes/userMapTypes";
 
 import {NullableString} from "@pluteojs/types/modules/commonTypes";
@@ -41,6 +42,37 @@ export default class UserMapService {
 				uniqueRequestId,
 				null,
 				userMap
+			);
+		});
+	}
+
+	public async addInvite(
+		uniqueRequestId: NullableString,
+		inviteDTO: {email: string; userId: string; carecircleId: string}
+	): Promise<iGenericServiceResult<iUserInvite | null>> {
+		return db.tx("add-carecircle", async (transaction) => {
+			const {email, userId, carecircleId} = inviteDTO;
+			const id = securityUtil.generateUUID();
+			const userInviteRecord = await transaction.invites.add(
+				id,
+				email,
+				userId,
+				carecircleId
+			);
+
+			const userInvite: iUserInvite = {
+				id: userInviteRecord.id,
+				email: userInviteRecord.email,
+				userId: userInviteRecord.user_id,
+				carecircleId: userInviteRecord.carecircle_id,
+			};
+
+			return serviceUtil.buildResult(
+				true,
+				httpStatusCodes.SUCCESS_OK,
+				uniqueRequestId,
+				null,
+				userInvite
 			);
 		});
 	}

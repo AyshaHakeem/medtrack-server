@@ -3,3 +3,10 @@ export interface iUserMapModel {
 	user_id: string;
 	carecircle_id: string;
 }
+
+export interface iUserInviteModel {
+	id: string;
+	email: string;
+	user_id: string;
+	carecircle_id: string;
+}

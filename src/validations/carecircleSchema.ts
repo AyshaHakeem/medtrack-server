@@ -12,6 +12,10 @@ const idSchema = Joi.object({
 	id,
 });
 
+const emailSchema = Joi.object({
+	email: Joi.string().required(),
+});
+
 const medicineDoseSchema = Joi.object({
 	time: Joi.string().required(),
 	dose: Joi.string().required(),
@@ -29,6 +33,7 @@ const medicineSchema = Joi.object({
 });
 
 export {
+	emailSchema,
 	carecircleNameSchema,
 	carecircleCreationSchema,
 	medicineSchema,
