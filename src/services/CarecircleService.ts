@@ -1,5 +1,5 @@
 // import logger from "@loaders/logger";
-
+import logger from "@loaders/logger";
 import {db} from "@db/index";
 
 import serviceUtil from "@util/serviceUtil";
@@ -20,6 +20,7 @@ import {
 } from "customTypes/appDataTypes/userMapTypes";
 
 import {NullableString} from "@pluteojs/types/modules/commonTypes";
+// import {UUID} from "crypto";
 
 export default class CarecircleService {
 	// add new carecircle
@@ -85,11 +86,10 @@ export default class CarecircleService {
 			const items: {[key: string]: iCarecircle} = {};
 			const ids: string[] = [];
 
-			const userMapRecords = await transaction.userMaps.findCarecircleIds(
+			const careCircleIds = await transaction.userMaps.findCarecircleIds(
 				userId
 			);
-
-			if (!userMapRecords || userMapRecords.length === 0) {
+			if (!careCircleIds || careCircleIds[0].carecircle_ids.length === 0) {
 				return serviceUtil.buildResult(
 					false,
 					httpStatusCodes.SUCCESS_NO_CONTENT,
@@ -98,8 +98,17 @@ export default class CarecircleService {
 				);
 			}
 
+			logger.debug(
+				uniqueRequestId,
+				`POST:/: carecircle :: Completed transaction.userMaps.findCarecircleIds: \n${careCircleIds}`,
+				null,
+				{
+					careCircleIds,
+				}
+			);
+
 			const carecircleRecords = await transaction.carecircles.findByIds(
-				userMapRecords
+				careCircleIds[0].carecircle_ids
 			);
 
 			carecircleRecords.forEach((carecircle) => {

@@ -43,7 +43,7 @@ const carecircleService = new CarecircleService();
 const medicineService = new MedicineService();
 const userMapService = new UserMapService();
 
-const userRoute: RouteType = (apiRouter) => {
+const carecircleRoute: RouteType = (apiRouter) => {
 	apiRouter.use("/carecircle", route);
 
 	/*
@@ -56,29 +56,27 @@ const userRoute: RouteType = (apiRouter) => {
 	*/
 	route.get(
 		"/",
-		celebrate({
-			[Segments.PARAMS]: idSchema,
-		}),
 		async (
-			req: iRequest<{userId: string}>,
+			req: iRequest,
 			res: iResponse<iCarecircleResult>,
 			next: NextFunction
 		) => {
 			const uniqueRequestId = expressUtil.parseUniqueRequestId(req);
-
+			const {decodedAccessToken} = req;
+			const {uid: userId} = decodedAccessToken;
 			logger.debug(
 				uniqueRequestId,
 				"Calling GET:/carecircle endpoint with body:",
 				null,
 				{
-					requestParams: req.params,
+					requestBody: req.body,
 				}
 			);
 
 			try {
 				const result = await carecircleService.getCarecircleList(
 					uniqueRequestId,
-					req.params.userId
+					userId
 				);
 				const {httpStatusCode} = result;
 
@@ -122,6 +120,9 @@ const userRoute: RouteType = (apiRouter) => {
 				}
 			);
 
+			const {decodedAccessToken} = req;
+			const {uid: userId} = decodedAccessToken;
+
 			try {
 				const {body} = req;
 				const result = await carecircleService.addCareCircle(
@@ -138,7 +139,22 @@ const userRoute: RouteType = (apiRouter) => {
 						result,
 					}
 				);
+				if (result.data) {
+					logger.silly("creating usermap");
+					const userMap = await carecircleService.addUserMap(uniqueRequestId, {
+						carecircleId: result.data.id,
+						userId,
+					});
 
+					logger.debug(
+						uniqueRequestId,
+						"POST:/: carecircle :: Completed carecircleService.addUserMap & sending result to client:",
+						null,
+						{
+							userMap,
+						}
+					);
+				}
 				return res.status(httpStatusCode).json(result);
 			} catch (error) {
 				logger.error(uniqueRequestId, "Error on POST:/:carecircle", error);
@@ -348,4 +364,4 @@ const userRoute: RouteType = (apiRouter) => {
 	*/
 };
 
-export default userRoute;
+export default carecircleRoute;
