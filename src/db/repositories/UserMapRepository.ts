@@ -58,10 +58,10 @@ export default class UserMapRepository {
 		);
 	}
 
-	async findCarecircleIds(userId: string): Promise<string[] | null> {
+	async findCarecircleIds(userId: string): Promise<any | null> {
 		return this.db.manyOrNone(
 			"SELECT array_agg(carecircle_id) AS carecircle_ids FROM user_map WHERE user_id=$1",
-			userId
+			[userId]
 		);
 	}
 
