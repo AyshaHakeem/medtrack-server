@@ -29,7 +29,7 @@ import {
 	iMedicineWithDose,
 } from "customTypes/appDataTypes/medicineTypes";
 
-import {iUserInvite, iUserMap} from "customTypes/appDataTypes/userMapTypes";
+import {iUserInvite} from "customTypes/appDataTypes/userMapTypes";
 
 import {
 	idSchema,
@@ -37,7 +37,6 @@ import {
 	medicineSchema,
 	emailSchema,
 } from "validations/carecircleSchema";
-import {medicineLog} from "db/sql";
 
 const route = Router();
 const carecircleService = new CarecircleService();
@@ -316,7 +315,7 @@ const userRoute: RouteType = (apiRouter) => {
 			try {
 				const {body} = req;
 
-				const result = userMapService.addInvite(uniqueRequestId, {
+				const result = await userMapService.addInvite(uniqueRequestId, {
 					...body,
 					userId: req.decodedAccessToken.uid,
 					carecircleId: req.decodedAccessToken.uid,

@@ -19,6 +19,11 @@ import {
 import {Diagnostics} from "@db/diagnostics"; // optional diagnostics
 
 import config from "@config";
+import CareCircleRepository from "./repositories/CarecircleRepository";
+import MedicineDoseRepository from "./repositories/MedicineDoseRepository";
+import MedicineLogRepository from "./repositories/MedicineLogRepository";
+import MedicineRespository from "./repositories/MedicineRespository";
+import UserMapRepository from "./repositories/UserMapRepository";
 
 const dbConfig = {
 	host: config.database.host,
@@ -51,6 +56,11 @@ const initOptions: IInitOptions<iDBInterfaceExtensions> = {
 			which should be as fast as possible.
 		*/
 		obj.users = new UsersRepository(obj, pgp);
+		obj.carecircles = new CareCircleRepository(obj, pgp);
+		obj.medicines = new MedicineRespository(obj, pgp);
+		obj.medicineDoses = new MedicineDoseRepository(obj, pgp);
+		obj.medicineLogs = new MedicineLogRepository(obj, pgp);
+		obj.userMaps = new UserMapRepository(obj, pgp);
 		obj.emailLogs = new EmailLogsRepository(obj, pgp);
 		obj.resetPasswordLogs = new ResetPasswordRepository(obj, pgp);
 		obj.emailVerificationRequestLogs =
