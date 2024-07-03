@@ -18,7 +18,7 @@ export default class MedicineRespository {
 	async add(
 		id: string,
 		patientName: string,
-		name: string,
+		medicineName: string,
 		careCircleId: string,
 		fromDate: string,
 		toDate: string,
@@ -27,7 +27,7 @@ export default class MedicineRespository {
 		return this.db.one(sql.add, {
 			id,
 			patientName,
-			name,
+			medicineName,
 			careCircleId,
 			fromDate,
 			toDate,

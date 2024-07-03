@@ -1,7 +1,7 @@
 import Joi from "joi";
 // import {uuidv4Schema} from "./genericSchemas";
 
-const idSchema = Joi.string().uuid().required();
+// const idSchema = Joi.string().uuid().required();
 const carecircleNameSchema = Joi.string().required();
 const carecircleIdSchema = Joi.string().uuid().required();
 
@@ -22,7 +22,7 @@ const medicineDoseSchema = Joi.object({
 const medicineSchema = Joi.object({
 	patientName: Joi.string().required(),
 	careCircleId: Joi.string().required(),
-	name: Joi.string().required(),
+	medicineName: Joi.string().required(),
 	fromDate: Joi.date().iso().required(),
 	toDate: Joi.date().iso().required(),
 	note: Joi.string().required(),

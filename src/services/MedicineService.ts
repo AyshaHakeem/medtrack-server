@@ -25,13 +25,20 @@ export default class MedicineService {
 		return db.tx("add-medicine-with-dose", async (transaction) => {
 			const doseIds: string[] = [];
 			const doseItems: {[id: string]: iMedicineDose} = {};
-			const {name, patientName, careCircleId, fromDate, toDate, note, doses} =
-				medicineDTO;
+			const {
+				patientName,
+				medicineName,
+				careCircleId,
+				fromDate,
+				toDate,
+				note,
+				doses,
+			} = medicineDTO;
 			const id = securityUtil.generateUUID();
 			const medicineRecord = await transaction.medicines.add(
 				id,
-				name,
 				patientName,
+				medicineName,
 				careCircleId,
 				fromDate,
 				toDate,
@@ -61,7 +68,7 @@ export default class MedicineService {
 				id: medicineRecord.id,
 				patientName: medicineRecord.patient_name,
 				carecircleId: medicineRecord.carecircle_id,
-				name: medicineRecord.name,
+				medicineName: medicineRecord.name,
 				fromDate: medicineRecord.from_date,
 				toDate: medicineRecord.to_date,
 				note: medicineRecord.note,
@@ -107,7 +114,7 @@ export default class MedicineService {
 						id: record.medicine_id,
 						patientName: record.patient_name,
 						carecircleId: record.carecircle_id,
-						name: record.medicine_name,
+						medicineName: record.medicine_name,
 						fromDate: record.from_date,
 						toDate: record.to_date,
 						note: record.medicine_note,
@@ -173,7 +180,7 @@ export default class MedicineService {
 						id: record.medicine_id,
 						patientName: record.patient_name,
 						carecircleId: record.carecircle_id,
-						name: record.medicine_name,
+						medicineName: record.medicine_name,
 						fromDate: record.from_date,
 						toDate: record.to_date,
 						note: record.medicine_note,

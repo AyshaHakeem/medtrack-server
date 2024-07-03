@@ -4,7 +4,7 @@ export interface iMedicineWithDose {
 	id: string;
 	patientName: string;
 	carecircleId: string;
-	name: string;
+	medicineName: string;
 	fromDate: string;
 	toDate: string;
 	note: string;
@@ -19,7 +19,7 @@ export interface iMedicineWithDose {
 export interface iMedicineCreationDTO {
 	patientName: string;
 	careCircleId: string;
-	name: string;
+	medicineName: string;
 	fromDate: string;
 	toDate: string;
 	note: string;
