@@ -17,7 +17,7 @@ export interface iMedicineWithDose {
 }
 
 export interface iMedicineCreationDTO {
-	patientName: string;
+	patientId: string;
 	careCircleId: string;
 	medicineName: string;
 	fromDate: string;

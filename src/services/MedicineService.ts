@@ -26,7 +26,7 @@ export default class MedicineService {
 			const doseIds: string[] = [];
 			const doseItems: {[id: string]: iMedicineDose} = {};
 			const {
-				patientName,
+				patientId,
 				medicineName,
 				careCircleId,
 				fromDate,
@@ -37,7 +37,7 @@ export default class MedicineService {
 			const id = securityUtil.generateUUID();
 			const medicineRecord = await transaction.medicines.add(
 				id,
-				patientName,
+				patientId,
 				medicineName,
 				careCircleId,
 				fromDate,
@@ -66,7 +66,7 @@ export default class MedicineService {
 
 			const medicine: iMedicineWithDose = {
 				id: medicineRecord.id,
-				patientName: medicineRecord.patient_name,
+				patientName: medicineRecord.patient_id,
 				carecircleId: medicineRecord.carecircle_id,
 				medicineName: medicineRecord.name,
 				fromDate: medicineRecord.from_date,

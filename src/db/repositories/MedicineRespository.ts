@@ -17,7 +17,7 @@ export default class MedicineRespository {
 
 	async add(
 		id: string,
-		patientName: string,
+		patientId: string,
 		medicineName: string,
 		careCircleId: string,
 		fromDate: string,
@@ -26,7 +26,7 @@ export default class MedicineRespository {
 	): Promise<iMedicineModel> {
 		return this.db.one(sql.add, {
 			id,
-			patientName,
+			patientId,
 			medicineName,
 			careCircleId,
 			fromDate,
@@ -49,7 +49,7 @@ export default class MedicineRespository {
 		return this.db.manyOrNone(
 			`SELECT 
                 m.id AS medicine_id,
-                m.patient_name,
+                p.patient_name,
                 m.carecircle_id,
                 m.name AS medicine_name,
                 m.from_date,
@@ -63,6 +63,8 @@ export default class MedicineRespository {
                 medicine m
             LEFT JOIN 
                 medicine_dose d ON m.id = d.medicine_id
+			LEFT JOIN
+				patient p ON m.patient_id = p.id
             WHERE 
                 m.carecircle_id = $1;`,
 			carecircleId
@@ -75,7 +77,7 @@ export default class MedicineRespository {
 		return this.db.manyOrNone(
 			`SELECT 
                 m.id AS medicine_id,
-                m.patient_name,
+                p.patient_name,
                 m.carecircle_id,
                 m.name AS medicine_name,
                 m.from_date,
@@ -89,6 +91,8 @@ export default class MedicineRespository {
                 medicine m
             LEFT JOIN 
                 medicine_dose d ON m.id = d.medicine_id
+			LEFT JOIN
+				patient p ON m.patient_id = p.id
             WHERE 
                 m.carecircle_id = $1
 				AND CURRENT_DATE::DATE BETWEEN m.from_date AND m.to_date;`,

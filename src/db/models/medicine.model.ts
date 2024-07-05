@@ -1,6 +1,6 @@
 export interface iMedicineModel {
 	id: string;
-	patient_name: string;
+	patient_id: string;
 	carecircle_id: string;
 	name: string;
 	from_date: string;
