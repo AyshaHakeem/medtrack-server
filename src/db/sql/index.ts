@@ -93,6 +93,11 @@ export const invites = {
 	add: sql("invites/add.sql"),
 };
 
+export const patients = {
+	create: sql("patients/create.sql"),
+	add: sql("patients/add.sql"),
+};
+
 export const emailLogs = {
 	create: sql("emailLogs/create.sql"),
 	add: sql("emailLogs/add.sql"),
