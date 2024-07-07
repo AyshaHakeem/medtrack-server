@@ -7,6 +7,7 @@ import MedicineDoseRepository from "./MedicineDoseRepository";
 import MedicineLogRepository from "./MedicineLogRepository";
 import UserMapRepository from "./UserMapRepository";
 import UserInviteRepository from "./UserInviteRepository";
+import PatientRepository from "./PatientRepository";
 import EmailLogsRepository from "./EmailLogsRepository";
 import ResetPasswordRepository from "./ResetPasswordRepository";
 import EmailVerificationRequestLogsRepository from "./EmailVerificationRequestLogsRepository";
@@ -21,7 +22,8 @@ interface iDBInterfaceExtensions {
 	medicineDoses: MedicineDoseRepository;
 	medicineLogs: MedicineLogRepository;
 	userMaps: UserMapRepository;
-	invites: UserInviteRepository;
+	userInvites: UserInviteRepository;
+	patients: PatientRepository;
 	emailLogs: EmailLogsRepository;
 	resetPasswordLogs: ResetPasswordRepository;
 	emailVerificationRequestLogs: EmailVerificationRequestLogsRepository;

@@ -1,1 +1,10 @@
-export interface iPatient {}
+export interface iPatient {
+	id: string;
+	patientName: string;
+	careCircleId: string;
+}
+
+export interface iPatientInputDTO {
+	patientName: string;
+	careCircleId: string;
+}

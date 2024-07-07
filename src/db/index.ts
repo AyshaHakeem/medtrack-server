@@ -24,6 +24,8 @@ import MedicineDoseRepository from "./repositories/MedicineDoseRepository";
 import MedicineLogRepository from "./repositories/MedicineLogRepository";
 import MedicineRespository from "./repositories/MedicineRespository";
 import UserMapRepository from "./repositories/UserMapRepository";
+import UserInviteRepository from "./repositories/UserInviteRepository";
+import PatientRepository from "./repositories/PatientRepository";
 
 const dbConfig = {
 	host: config.database.host,
@@ -61,6 +63,8 @@ const initOptions: IInitOptions<iDBInterfaceExtensions> = {
 		obj.medicineDoses = new MedicineDoseRepository(obj, pgp);
 		obj.medicineLogs = new MedicineLogRepository(obj, pgp);
 		obj.userMaps = new UserMapRepository(obj, pgp);
+		obj.userInvites = new UserInviteRepository(obj, pgp);
+		obj.patients = new PatientRepository(obj, pgp);
 		obj.emailLogs = new EmailLogsRepository(obj, pgp);
 		obj.resetPasswordLogs = new ResetPasswordRepository(obj, pgp);
 		obj.emailVerificationRequestLogs =

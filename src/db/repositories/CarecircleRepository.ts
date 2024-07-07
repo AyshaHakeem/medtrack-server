@@ -43,7 +43,7 @@ export default class CareCircleRepository {
 		return this.db.oneOrNone("SELECT * FROM carecircle WHERE id=$1", id);
 	}
 
-	async findByIds(ids): Promise<iCarecircleModel[]> {
+	async findByIds(ids: string[]): Promise<iCarecircleModel[]> {
 		return this.db.manyOrNone(
 			"SELECT * FROM carecircle WHERE id = ANY($1::uuid[])",
 			[ids]
