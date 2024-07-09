@@ -1,6 +1,6 @@
 import {IDatabase, IMain} from "pg-promise";
 
-import {iPatientModel} from "@db/models/patient.model";
+import {iPatientListModel, iPatientModel} from "@db/models/patient.model";
 
 import {patients as sql} from "@db/sql";
 
@@ -31,5 +31,19 @@ export default class PatientRepository {
 			patientName,
 			carecircleId,
 		});
+	}
+
+	async findByCareCircleId(carecircleId: string): Promise<iPatientListModel[]> {
+		return this.db.manyOrNone(
+			`SELECT
+				p.id,
+				p.patient_name
+			FROM
+				patients p
+			WHERE
+				p.carecircle_id = $1;
+			`,
+			carecircleId
+		);
 	}
 }
