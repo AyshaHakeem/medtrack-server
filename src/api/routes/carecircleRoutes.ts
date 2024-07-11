@@ -10,6 +10,7 @@ import middlewares from "@api/middlewares";
 import CarecircleService from "@services/CarecircleService";
 import MedicineService from "@services/MedicineService";
 import UserMapService from "@services/userMapService";
+import PatientService from "services/PatientService";
 
 import expressUtil from "@util/expressUtil";
 
@@ -31,6 +32,8 @@ import {
 
 import {iUserInvite} from "customTypes/appDataTypes/userMapTypes";
 
+import {iPatientResult} from "customTypes/appDataTypes/patientTypes";
+
 import {
 	carecircleIdSchema,
 	carecircleCreationSchema,
@@ -42,6 +45,7 @@ const route = Router();
 const carecircleService = new CarecircleService();
 const medicineService = new MedicineService();
 const userMapService = new UserMapService();
+const patientService = new PatientService();
 
 const carecircleRoute: RouteType = (apiRouter) => {
 	apiRouter.use("/carecircle", route);
@@ -226,7 +230,6 @@ const carecircleRoute: RouteType = (apiRouter) => {
 			res: iResponse<iMedicineResult>,
 			next: NextFunction
 		) => {
-			console.log("Request Params:", req.params);
 			logger.silly(
 				`Calling GET:/:carecircleId/today endpoint with params :\n ${req.params}`
 			);
@@ -360,8 +363,35 @@ const carecircleRoute: RouteType = (apiRouter) => {
 		}
 	);
 	/*
-		add user map
+		get patient list
 	*/
+	route.get(
+		"/:carecircleId/patients",
+		async (
+			req: iRequest<{carecircleId: string}>,
+			res: iResponse<iPatientResult>,
+			next: NextFunction
+		) => {
+			const uniqueRequestId = expressUtil.parseUniqueRequestId(req);
+			try {
+				const result = await patientService.getPatientList(
+					uniqueRequestId,
+					req.params.carecircleId
+				);
+
+				const {httpStatusCode} = result;
+
+				return res.status(httpStatusCode).json(result);
+			} catch (error) {
+				logger.error(
+					uniqueRequestId,
+					"Error on GET:/:carecircleId/patients",
+					error
+				);
+				return next(error);
+			}
+		}
+	);
 };
 
 export default carecircleRoute;
