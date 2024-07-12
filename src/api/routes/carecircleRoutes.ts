@@ -32,7 +32,11 @@ import {
 
 import {iUserInvite} from "customTypes/appDataTypes/userMapTypes";
 
-import {iPatientResult} from "customTypes/appDataTypes/patientTypes";
+import {
+	iPatient,
+	iPatientInputDTO,
+	iPatientResult,
+} from "customTypes/appDataTypes/patientTypes";
 
 import {
 	carecircleIdSchema,
@@ -366,7 +370,7 @@ const carecircleRoute: RouteType = (apiRouter) => {
 		get patient list
 	*/
 	route.get(
-		"/:carecircleId/patients",
+		"/:carecircleId/patient",
 		async (
 			req: iRequest<{carecircleId: string}>,
 			res: iResponse<iPatientResult>,
@@ -386,6 +390,37 @@ const carecircleRoute: RouteType = (apiRouter) => {
 				logger.error(
 					uniqueRequestId,
 					"Error on GET:/:carecircleId/patients",
+					error
+				);
+				return next(error);
+			}
+		}
+	);
+	/*
+		add patient
+	*/
+	route.post(
+		"/:carecircleId/patient",
+		async (
+			req: iRequest<iPatientInputDTO>,
+			res: iResponse<iPatient | null>,
+			next: NextFunction
+		) => {
+			const uniqueRequestId = expressUtil.parseUniqueRequestId(req);
+			try {
+				const {body} = req;
+
+				const result = await patientService.addPatient(uniqueRequestId, {
+					...body,
+				});
+
+				const {httpStatusCode} = result;
+
+				return res.status(httpStatusCode).json(result);
+			} catch (error) {
+				logger.error(
+					uniqueRequestId,
+					"Error on POST:/:carecircleId/patient",
 					error
 				);
 				return next(error);
