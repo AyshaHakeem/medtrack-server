@@ -86,13 +86,18 @@ export default class MedicineRespository {
                 d.id AS dose_id,
                 d.time AS dose_time,
                 d.dose AS dose_amount,
-                d.note AS dose_note
+                d.note AS dose_note,
+				ml.id AS medicine_log_id,
+				ml.user_id AS logged_by_user,
+				ml.date AS medicine_log_date
             FROM 
                 medicine m
             LEFT JOIN 
                 medicine_dose d ON m.id = d.medicine_id
 			LEFT JOIN
 				patient p ON m.patient_id = p.id
+			LEFT JOIN
+				medicine_log ml ON d.id = ml.dose_id AND DATE(ml.date) = CURRENT_DATE
             WHERE 
                 m.carecircle_id = $1
 				AND CURRENT_DATE::DATE BETWEEN m.from_date AND m.to_date;`,
