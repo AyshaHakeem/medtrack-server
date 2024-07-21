@@ -1,6 +1,6 @@
 /*
     Inserts a new DailyLog record.
 */
-INSERT INTO daily_log(id, dose_id, date, user_id)
-VALUES(${id}, ${doseId}, ${time}, ${userId})
+INSERT INTO daily_log(id, dose_id, user_id, date)
+VALUES(${id}, ${doseId}, ${userId}, CURRENT_TIMESTAMP)
 RETURNING *;
