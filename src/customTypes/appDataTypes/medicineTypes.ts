@@ -45,4 +45,8 @@ export interface iMedicineDoseRecord {
 	dose_amount: string;
 	dose_time: string;
 	dose_note: string;
+	dose_status?: string;
+	medicine_log_id?: string | null;
+	logged_by_user?: string | null;
+	medicine_log_date?: string | null;
 }

@@ -198,7 +198,8 @@ export default class MedicineService {
 						dose: record.dose_amount,
 						time: record.dose_time,
 						note: record.dose_note,
-						medicineId: record.medicine_id,
+						logged_by_user: record.logged_by_user,
+						medicine_log_date: record.medicine_log_date,
 					};
 				}
 			});

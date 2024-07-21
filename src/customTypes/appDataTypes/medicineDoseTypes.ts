@@ -1,9 +1,11 @@
 export interface iMedicineDose {
 	id: string;
-	medicineId: string;
+	medicineId?: string;
 	time: string;
 	dose: string;
 	note: string;
+	logged_by_user?: string | null;
+	medicine_log_date?: string | null;
 }
 
 export interface iMedicineDoseCreationDTO {
