@@ -35,15 +35,11 @@ export default class MedicineLogRepository {
 	async add(
 		id: string,
 		doseId: string,
-		date: string,
-		status: string,
 		userId: string
 	): Promise<iMedicineLogModel> {
 		return this.db.one(sql.add, {
 			id,
 			doseId,
-			date,
-			status,
 			userId,
 		});
 	}

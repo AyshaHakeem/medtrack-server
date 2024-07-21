@@ -53,7 +53,7 @@ export default class UserMapService {
 		return db.tx("add-carecircle", async (transaction) => {
 			const {email, userId, carecircleId} = inviteDTO;
 			const id = securityUtil.generateUUID();
-			const userInviteRecord = await transaction.invites.add(
+			const userInviteRecord = await transaction.userInvites.add(
 				id,
 				email,
 				userId,

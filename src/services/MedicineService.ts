@@ -11,10 +11,11 @@ import {
 	iMedicineWithDose,
 	iMedicineDoseRecord,
 } from "customTypes/appDataTypes/medicineTypes";
-
+import {iMedicineLog} from "customTypes/appDataTypes/medicineLogTypes";
 import {iMedicineDose} from "customTypes/appDataTypes/medicineDoseTypes";
 
 import {NullableString} from "@pluteojs/types/modules/commonTypes";
+import {genericServiceErrors} from "constants/errors/genericServiceErrors";
 
 export default class MedicineService {
 	// add a medicine record and related dose records
@@ -215,6 +216,44 @@ export default class MedicineService {
 				null,
 				medicineList
 			);
+		});
+	}
+
+	// add medicine log record
+	public async addMedicineLog(
+		uniqueRequestId: NullableString,
+		logDTO: {doseId: string; userId: string}
+	): Promise<iGenericServiceResult<iMedicineLog | null>> {
+		return db.tx("add-medicince-log", async (transaction) => {
+			try {
+				const id = securityUtil.generateUUID();
+				const {doseId, userId} = logDTO;
+				const medLogRecord = await transaction.medicineLogs.add(
+					id,
+					doseId,
+					userId
+				);
+				const result = {
+					id: medLogRecord.id,
+					doseId: medLogRecord.dose_id,
+					userId: medLogRecord.user_id,
+					date: medLogRecord.date,
+				};
+				return serviceUtil.buildResult(
+					true,
+					httpStatusCodes.SUCCESS_OK,
+					uniqueRequestId,
+					null,
+					result
+				);
+			} catch (error) {
+				return serviceUtil.buildResult(
+					false,
+					httpStatusCodes.SERVER_ERROR_BAD_GATEWAY,
+					uniqueRequestId,
+					genericServiceErrors.errors.SomethingWentWrong
+				);
+			}
 		});
 	}
 }
