@@ -44,6 +44,7 @@ import {
 	medicineSchema,
 	emailSchema,
 } from "validations/carecircleSchema";
+import {iMedicineLog} from "customTypes/appDataTypes/medicineLogTypes";
 
 const route = Router();
 const carecircleService = new CarecircleService();
@@ -269,6 +270,45 @@ const carecircleRoute: RouteType = (apiRouter) => {
 				logger.error(
 					uniqueRequestId,
 					"Error on GET:/:carecircleId/today",
+					error
+				);
+				return next(error);
+			}
+		}
+	);
+	/*
+		add medicine log record
+	*/
+	route.post(
+		"/:carecircleId/medicine/today",
+		async (
+			req: iRequest<{doseId: string}>,
+			res: iResponse<iMedicineLog>,
+			next: NextFunction
+		) => {
+			const uniqueRequestId = expressUtil.parseUniqueRequestId(req);
+			const userId = req.decodedAccessToken.uid;
+
+			try {
+				const result = await medicineService.addMedicineLog(uniqueRequestId, {
+					doseId: req.body.doseId,
+					userId,
+				});
+
+				logger.debug(
+					uniqueRequestId,
+					"POST:/:carecircleId/today :: Completed medicineService.addMedicineLog & sending result to client:",
+					null,
+					{
+						result,
+					}
+				);
+
+				return res.status(result.httpStatusCode).json(result);
+			} catch (error) {
+				logger.error(
+					uniqueRequestId,
+					"Error on POST:/:carecircleId/today",
 					error
 				);
 				return next(error);
