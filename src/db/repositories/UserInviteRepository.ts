@@ -36,13 +36,15 @@ export default class UserInviteRepository {
 		id: string,
 		email: string,
 		userId: string,
-		carecircleId: string
+		carecircleId: string,
+		status: boolean
 	): Promise<iUserInviteModel> {
 		return this.db.one(sql.add, {
 			id,
 			email,
 			userId,
 			carecircleId,
+			status,
 		});
 	}
 

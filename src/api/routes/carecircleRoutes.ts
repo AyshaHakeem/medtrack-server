@@ -381,7 +381,7 @@ const carecircleRoute: RouteType = (apiRouter) => {
 				const result = await userMapService.addInvite(uniqueRequestId, {
 					...body,
 					userId: req.decodedAccessToken.uid,
-					carecircleId: req.decodedAccessToken.uid,
+					carecircleId: req.params.carecircleId,
 				});
 
 				const {httpStatusCode} = result;

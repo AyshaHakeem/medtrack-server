@@ -14,4 +14,5 @@ export interface iUserInvite {
 	email: string;
 	userId: string;
 	carecircleId: string;
+	status: string;
 }
