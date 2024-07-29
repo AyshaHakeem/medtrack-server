@@ -57,7 +57,8 @@ export default class UserMapService {
 				id,
 				email,
 				userId,
-				carecircleId
+				carecircleId,
+				false
 			);
 
 			const userInvite: iUserInvite = {
@@ -65,6 +66,7 @@ export default class UserMapService {
 				email: userInviteRecord.email,
 				userId: userInviteRecord.user_id,
 				carecircleId: userInviteRecord.carecircle_id,
+				status: userInviteRecord.status,
 			};
 
 			return serviceUtil.buildResult(

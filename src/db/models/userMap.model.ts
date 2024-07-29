@@ -9,4 +9,5 @@ export interface iUserInviteModel {
 	email: string;
 	user_id: string;
 	carecircle_id: string;
+	status: boolean;
 }
