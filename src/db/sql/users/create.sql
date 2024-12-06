@@ -9,5 +9,5 @@ CREATE TABLE users
     email VARCHAR(225) NOT NULL,
     phone_number VARCHAR(32),
     password VARCHAR(256),
-    created_at TIMESTAMPTZ
+    created_at timestamp default CURRENT_TIMESTAMP not null
 )
